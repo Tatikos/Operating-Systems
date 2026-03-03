@@ -6,11 +6,11 @@ These three C programs demonstrate core operating system concepts, specifically 
 
 ## 📂 Project Overview
 
-* **Exercise 1: Multithreaded Pi Calculation (`ex1.c`)**
+* **Exercise 1: Multithreaded Pi Calculation (`pi_calc.c`)**
     * [cite_start]**Description:** A program that calculates an approximation of the value of Pi[cite: 6]. [cite_start]It uses concurrent threads (multithreaded) in C to divide the computational workload[cite: 13].
     * **Concepts:** POSIX Threads (`pthreads`), Mutexes, Workload distribution.
 
-* **Exercise 2: The Monkey Synchronization Problem (`ex2.c`)**
+* **Exercise 2: The Monkey Synchronization Problem (`monkey.c`)**
     * [cite_start]**Description:** Models a room with a group of monkeys, one bicycle, and a plate of food[cite: 16]. [cite_start]The program models this scenario using semaphores [cite: 19] [cite_start]to enforce strict rules: a monkey must eat before cycling, only up to three monkeys can eat at the same time, and only one monkey can use the bicycle at a time[cite: 17, 18].
     * **Concepts:** POSIX Semaphores (`sem_t`), Resource Management, Thread Synchronization.
 
