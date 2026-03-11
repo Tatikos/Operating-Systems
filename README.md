@@ -1,23 +1,48 @@
-# EPL222 - Operating Systems: Lab Exercise 1
+# EPL222 - Operating Systems: Lab Exercises
 
-[cite_start]This repository contains my solutions for the 1st Lab Exercise of the EPL222 Operating Systems course [cite: 2, 4][cite_start], offered by the Computer Science Department at the University of Cyprus[cite: 1]. [cite_start]The course took place during the Spring Semester of 2025/26[cite: 2].
+This repository contains my solutions for the Lab Exercises of the EPL222 Operating Systems course, offered by the Computer Science Department at the University of Cyprus. The course took place during the Spring Semester of 2025/26.
 
-These three C programs demonstrate core operating system concepts, specifically multithreading, synchronization, and avoiding concurrency issues like deadlock and starvation.
+These programs demonstrate core operating system concepts, specifically multithreading, synchronization, monitors, and avoiding concurrency issues like deadlock and starvation.
 
-## 📂 Project Overview
+---
+
+## 📂 Lab Exercise 1
 
 * **Exercise 1: Multithreaded Pi Calculation (`pi_calc.c`)**
-    * [cite_start]**Description:** A program that calculates an approximation of the value of Pi[cite: 6]. [cite_start]It uses concurrent threads (multithreaded) in C to divide the computational workload[cite: 13].
+    * **Description:** A program that calculates an approximation of the value of Pi. It uses concurrent threads (multithreaded) in C to divide the computational workload.
     * **Concepts:** POSIX Threads (`pthreads`), Mutexes, Workload distribution.
 
 * **Exercise 2: The Monkey Synchronization Problem (`monkey.c`)**
-    * [cite_start]**Description:** Models a room with a group of monkeys, one bicycle, and a plate of food[cite: 16]. [cite_start]The program models this scenario using semaphores [cite: 19] [cite_start]to enforce strict rules: a monkey must eat before cycling, only up to three monkeys can eat at the same time, and only one monkey can use the bicycle at a time[cite: 17, 18].
+    * **Description:** Models a room with a group of monkeys, one bicycle, and a plate of food. The program models this scenario using semaphores to enforce strict rules: a monkey must eat before cycling, only up to three monkeys can eat at the same time, and only one monkey can use the bicycle at a time.
     * **Concepts:** POSIX Semaphores (`sem_t`), Resource Management, Thread Synchronization.
 
 * **Exercise 3: Traffic Intersection (`traffic.c`)**
-    * [cite_start]**Description:** Models a traffic scenario at an intersection of two one-way streets [cite: 23] [cite_start]using condition variables[cite: 23]. [cite_start]It ensures that only one car crosses at a time [cite: 26] [cite_start]and alternates priority between the two roads to prevent prolonged starvation[cite: 28].
+    * **Description:** Models a traffic scenario at an intersection of two one-way streets using condition variables. It ensures that only one car crosses at a time and alternates priority between the two roads to prevent prolonged starvation.
     * **Concepts:** POSIX Condition Variables (`pthread_cond_t`), Mutexes, Starvation Prevention.
+
+---
+
+## 📂 Lab Exercise 2
+
+* **Exercise 1: Shop Queue Simulation (`ex1_main.c`, `ex1_monitor.c`, `ex1_monitor.h`)**
+    * **Description:** Models a shop where each arriving customer receives a number and joins a queue. The employee serves customers in ascending order of their number. If no customers are present, the employee waits.
+    * **Monitor Procedures:**
+        * `enter(id)` – models what a customer does: joins the queue and waits until served.
+        * `service()` – models what the employee does: dequeues and serves the next customer.
+    * **Concepts:** POSIX Threads (`pthreads`), Monitors, Mutexes, Condition Variables, Queue (array-based).
+
+---
 
 ## ⚙️ Compilation & Execution
 
-All programs require the POSIX threads library. Use the `-pthread` flag when compiling with `gcc`.
+All programs require the POSIX threads library. Use the `-lpthread` flag when compiling with `gcc`.
+
+```bash
+# Lab Exercise 1
+gcc -Wall -o pi_calc pi_calc.c -lpthread
+gcc -Wall -o monkey monkey.c -lpthread
+gcc -Wall -o traffic traffic.c -lpthread
+
+# Lab Exercise 2
+gcc -Wall -o exercise1 ex1_main.c ex1_monitor.c -lpthread
+```
