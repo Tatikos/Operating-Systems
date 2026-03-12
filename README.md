@@ -31,6 +31,14 @@ These programs demonstrate core operating system concepts, specifically multithr
         * `service()` – models what the employee does: dequeues and serves the next customer.
     * **Concepts:** POSIX Threads (`pthreads`), Monitors, Mutexes, Condition Variables, Queue (array-based).
 
+* **Exercise 2: Five-Plates Dining Simulation (ex2_main.c, ex2_monitor.c, ex2_monitor.h)**
+
+    * **Description:** Models a scenario with 5 shared plates and a number of people. Each person flips a coin: heads means they must fill an empty plate with food (waiting if all 5 are full); tails means they take a filled plate and eat (waiting if all plates are empty).
+    * **Monitor Procedures:**
+        * `work(id)` – models filling a plate with food.
+        * `eat(id)` – models emptying a plate (eating).
+    * **Concepts:** POSIX Threads (`pthreads`), Monitors, Mutexes, Condition Variables, Resource Management.
+
 ---
 
 ## ⚙️ Compilation & Execution
@@ -45,4 +53,5 @@ gcc -Wall -o traffic traffic.c -lpthread
 
 # Lab Exercise 2
 gcc -Wall -o exercise1 ex1_main.c ex1_monitor.c -lpthread
+gcc -Wall -o exercise2 ex2_main.c ex2_monitor.c -lpthread
 ```
