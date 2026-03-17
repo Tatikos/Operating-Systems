@@ -1,19 +1,7 @@
-/*
- * EPL222 - Lab Exercise 2 - Exercise 1
- * Monitor implementation for the shop queue simulation.
- *
- * Shared state:
- *   - queue[]         : array of customer ids waiting to be served
- *   - customer_ready[]: one condition variable per customer slot
- *   - is_served[]     : flag set to 1 once a customer is served
- *   - not_empty       : condition variable for the employee to wait on
- */
-
 #include <stdio.h>
 #include <pthread.h>
 #include "ex1_monitor.h"
 
-/* ─── Queue state ────────────────────────────────────────────── */
 static int queue[MAX_CUSTOMERS];
 static int head = 0, tail = 0, q_size = 0;
 
@@ -34,10 +22,9 @@ int deQueue(void) {
     return val;
 }
 
-/* ─── Monitor internals ──────────────────────────────────────── */
 static pthread_mutex_t mutex;
-static pthread_cond_t  not_empty;                         /* employee waits here */
-static pthread_cond_t  customer_ready[MAX_CUSTOMERS];     /* one per customer    */
+static pthread_cond_t  not_empty;                       
+static pthread_cond_t  customer_ready[MAX_CUSTOMERS]; 
 static int             is_served[MAX_CUSTOMERS];
 
 void monitor_init(void) {
@@ -56,13 +43,6 @@ void monitor_destroy(void) {
     pthread_mutex_destroy(&mutex);
 }
 
-/* ─── Monitor procedures ─────────────────────────────────────── */
-
-/*
- * enter(id): called by the customer thread.
- * Enqueues the customer, wakes the employee, then blocks
- * until the employee marks this customer as served.
- */
 void enter(int id) {
     pthread_mutex_lock(&mutex);
 
@@ -70,7 +50,7 @@ void enter(int id) {
     printf("[Customer %2d] Entered shop and joined the queue  "
            "(queue size: %d)\n", id, q_size);
 
-    pthread_cond_signal(&not_empty);   /* wake employee if waiting */
+    pthread_cond_signal(&not_empty);
 
     while (!is_served[id])
         pthread_cond_wait(&customer_ready[id], &mutex);
@@ -79,11 +59,6 @@ void enter(int id) {
     pthread_mutex_unlock(&mutex);
 }
 
-/*
- * service(): called by the employee thread.
- * Blocks while the queue is empty, then dequeues and serves
- * the next customer (FIFO order).
- */
 void service(void) {
     pthread_mutex_lock(&mutex);
 
@@ -97,7 +72,7 @@ void service(void) {
            id, q_size);
 
     is_served[id] = 1;
-    pthread_cond_signal(&customer_ready[id]);  /* wake the served customer */
+    pthread_cond_signal(&customer_ready[id]);
 
     pthread_mutex_unlock(&mutex);
 }
