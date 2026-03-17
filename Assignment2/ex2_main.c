@@ -1,41 +1,38 @@
-/*
- * EPL222 - Lab Exercise 2 - Exercise 2
- * Main program – creates person threads.
- *
- * Compile:
- *   gcc -Wall -o exercise2 exercise2_main.c exercise2_monitor.c -lpthread
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <unistd.h>
 #include <time.h>
+#ifdef _WIN32
+    #include <windows.h>
+    #define sleep_ms(ms) Sleep(ms)
+#else
+    #include <unistd.h>
+    #define sleep_ms(ms) usleep((ms) * 1000)
+#endif
 #include "ex2_monitor.h"
 
 #define NUM_PEOPLE 8
-#define ROUNDS     6   /* coin-flips per person */
+#define ROUNDS 6 
 
-/* ─── Thread function ────────────────────────────────────────── */
 
 void *person_thread(void *arg) {
     int id = *(int *)arg;
 
     for (int r = 0; r < ROUNDS; r++) {
-        usleep((rand() % 400 + 100) * 1000);   /* random delay between actions */
+        sleep_ms(rand() % 400 + 100); 
 
-        if (rand() % 2 == 1) {   /* HEADS */
+        if (rand() % 2 == 1) { 
             work(id);
-        } else {                  /* TAILS */
+        } else {               
             eat(id);
         }
     }
 
     printf("[Person %2d] Finished all %d rounds.\n", id, ROUNDS);
+    thread_done();
     return NULL;
 }
 
-/* ─── main ───────────────────────────────────────────────────── */
 
 int main(void) {
     srand((unsigned)time(NULL));
@@ -43,7 +40,7 @@ int main(void) {
     pthread_t threads[NUM_PEOPLE];
     int       ids[NUM_PEOPLE];
 
-    monitor_init();
+    monitor_init(NUM_PEOPLE);
 
     printf("=== Plates simulation started "
            "(%d people, %d plates, %d rounds each) ===\n\n",

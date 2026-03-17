@@ -1,11 +1,3 @@
-/*
- * EPL222 - Lab Exercise 2 - Exercise 1
- * Main program – creates customer and employee threads.
- *
- * Compile:
- *   gcc -Wall -o exercise1 exercise1_main.c exercise1_monitor.c -lpthread
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -15,11 +7,9 @@
 
 #define NUM_CUSTOMERS 10
 
-/* ─── Thread functions ───────────────────────────────────────── */
 
 void *customer_thread(void *arg) {
     int id = *(int *)arg;
-    /* Customers arrive at slightly different times */
     usleep((rand() % 500 + 100) * 1000);
     enter(id);
     return NULL;
@@ -29,13 +19,12 @@ void *employee_thread(void *arg) {
     int total = *(int *)arg;
     for (int i = 0; i < total; i++) {
         service();
-        usleep((rand() % 300 + 200) * 1000);  /* simulate service time */
+        usleep((rand() % 300 + 200) * 1000);
     }
     printf("[Employee  ] All %d customers served – closing shop.\n", total);
     return NULL;
 }
 
-/* ─── main ───────────────────────────────────────────────────── */
 
 int main(void) {
     srand((unsigned)time(NULL));
